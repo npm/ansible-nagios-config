@@ -1,0 +1,75 @@
+# Hosts.
+- name: create hosts.cfg
+  sudo: true
+  notify: restart nagios
+  template: >
+    src=hosts.cfg
+    dest=/usr/local/nagios/etc/objects/hosts.cfg
+    owner=nagios
+    group=nagios
+    mode=640
+
+- name: load hosts.cfg
+  sudo: true
+  notify: restart nagios
+  lineinfile: >
+    dest=/usr/local/nagios/etc/nagios.cfg
+    line="cfg_file=/usr/local/nagios/etc/objects/hosts.cfg"
+    regexp="cfg_file\=/usr/local/nagios/etc/objects/hosts\.cfg"
+
+# Host Groups.
+- name: create hostgroups.cfg
+  sudo: true
+  notify: restart nagios
+  template: >
+    src=hostgroups.cfg
+    dest=/usr/local/nagios/etc/objects/hostgroups.cfg
+    owner=nagios
+    group=nagios
+    mode=640
+
+- name: load hostgroups.cfg
+  sudo: true
+  notify: restart nagios
+  lineinfile: >
+    dest=/usr/local/nagios/etc/nagios.cfg
+    line="cfg_file=/usr/local/nagios/etc/objects/hostgroups.cfg"
+    regexp="cfg_file\=/usr/local/nagios/etc/objects/hostgroups\.cfg"
+
+# Additional Commands
+- name: create additional_commands.cfg
+  sudo: true
+  notify: restart nagios
+  template: >
+    src=commands.cfg
+    dest=/usr/local/nagios/etc/objects/additional_commands.cfg
+    owner=nagios
+    group=nagios
+    mode=640
+
+- name: load additional_commands.cfg
+  sudo: true
+  notify: restart nagios
+  lineinfile: >
+    dest=/usr/local/nagios/etc/nagios.cfg
+    line="cfg_file=/usr/local/nagios/etc/objects/additional_commands.cfg"
+    regexp="cfg_file\=/usr/local/nagios/etc/objects/additional_commands\.cfg"
+
+# Services.
+- name: create services.cfg
+  sudo: true
+  notify: restart nagios
+  template: >
+    src=services.cfg
+    dest=/usr/local/nagios/etc/objects/services.cfg
+    owner=nagios
+    group=nagios
+    mode=640
+
+- name: load services.cfg
+  sudo: true
+  notify: restart nagios
+  lineinfile: >
+    dest=/usr/local/nagios/etc/nagios.cfg
+    line="cfg_file=/usr/local/nagios/etc/objects/services.cfg"
+    regexp="cfg_file\=/usr/local/nagios/etc/objects/services\.cfg"
