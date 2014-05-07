@@ -2,9 +2,8 @@ Ansible-Nagios-Config
 ====================
 
 Before going any further, this role is designed to be run on servers that
-have been provisioned using the npm Nagios Role:
-
-[ansible-nagios](http://github.com/npm/ansible-nagios).
+have been provisioned using the npm [Nagios Role](http://github.com/npm/ansible-nagios).
+Provision a new server using this role.
 
 What is This?
 ------------
