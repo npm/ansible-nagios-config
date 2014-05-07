@@ -29,9 +29,9 @@ nagios_hosts
 
 Used to describe the hosts you would like to monitor with Nagios:
 
-* **name** the name of the host, used to reference it in *host_groups.*
-* **address** the actual address of the host.
-* **other variables** other variables represent *host_groups* that the host
+* **name:** the name of the host, used to reference it in *host_groups.*
+* **address:** the actual address of the host.
+* *other variables:* other variables represent *host_groups* that the host
 belongs to, e.g., `www`, `aws`.
 
 ```yaml
