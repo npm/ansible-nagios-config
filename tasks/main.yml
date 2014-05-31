@@ -1,3 +1,7 @@
+- name: make sure SSH Control Master directory exists
+  sudo: true
+  file: name=/var/run/nagios state=directory owner=nagios group=root mode=0700
+
 # Hosts.
 - name: create hosts.cfg
   sudo: true
