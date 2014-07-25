@@ -15,7 +15,8 @@
   lineinfile: >
     dest=/usr/local/nagios/etc/nagios.cfg
     line="cfg_file=/usr/local/nagios/etc/objects/hosts.cfg"
-    regexp="cfg_file\=/usr/local/nagios/etc/objects/hosts\.cfg"
+    regexp="^cfg_file\=/usr/local/nagios/etc/objects/hosts\.cfg"
+    state=present
 
 # Host Groups.
 - name: create hostgroups.cfg
@@ -34,7 +35,8 @@
   lineinfile: >
     dest=/usr/local/nagios/etc/nagios.cfg
     line="cfg_file=/usr/local/nagios/etc/objects/hostgroups.cfg"
-    regexp="cfg_file\=/usr/local/nagios/etc/objects/hostgroups\.cfg"
+    regexp="^cfg_file\=/usr/local/nagios/etc/objects/hostgroups\.cfg"
+    state=present
 
 # Additional Commands
 - name: create additional_commands.cfg
@@ -53,7 +55,8 @@
   lineinfile: >
     dest=/usr/local/nagios/etc/nagios.cfg
     line="cfg_file=/usr/local/nagios/etc/objects/additional_commands.cfg"
-    regexp="cfg_file\=/usr/local/nagios/etc/objects/additional_commands\.cfg"
+    regexp="^cfg_file\=/usr/local/nagios/etc/objects/additional_commands\.cfg"
+    state=present
 
 # Services.
 - name: create services.cfg
@@ -72,4 +75,5 @@
   lineinfile: >
     dest=/usr/local/nagios/etc/nagios.cfg
     line="cfg_file=/usr/local/nagios/etc/objects/services.cfg"
-    regexp="cfg_file\=/usr/local/nagios/etc/objects/services\.cfg"
+    regexp="^cfg_file\=/usr/local/nagios/etc/objects/services\.cfg"
+    state=present
