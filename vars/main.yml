@@ -1,0 +1,15 @@
+# base directory for nagios installation
+nagios_base_dir: /usr/local/nagios
+
+# nagios object directory
+nagios_object_dir: "{{nagios_base_dir}}/etc/objects"
+
+# if true, nagios_object_dir is a cfg_dir and nagios will
+# autoload all files ending in .cfg
+nagios_cfg_dir_enabled: false
+
+# id of nagios user
+nagios_user: nagios
+
+# id of nagios group
+nagios_group: nagios

@@ -1,79 +1,37 @@
-# Hosts.
-- name: create hosts.cfg
+- name: Install config files
   sudo: true
   notify: restart nagios
   template: >
-    src=hosts.cfg
-    dest=/usr/local/nagios/etc/objects/hosts.cfg
-    owner=nagios
-    group=nagios
+    src={{item.src}}
+    dest={{nagios_object_dir}}/{{item.dest}}
+    owner={{nagios_user}}
+    group={{nagios_group}}
     mode=640
+  with_items:
+    - { src: hosts.cfg, dest: hosts.cfg }
+    - { src: hostgroups.cfg, dest: hostgroups.cfg }
+    - { src: services.cfg, dest: services.cfg }
+    - { src: commands.cfg, dest: additional_commands.cfg }
 
-- name: load hosts.cfg
+- name: Update nagios.cfg with config files
   sudo: true
   notify: restart nagios
   lineinfile: >
-    dest=/usr/local/nagios/etc/nagios.cfg
-    line="cfg_file=/usr/local/nagios/etc/objects/hosts.cfg"
-    regexp="^cfg_file\=/usr/local/nagios/etc/objects/hosts\.cfg"
-    state=present
+    dest={{nagios_base_dir}}/etc/nagios.cfg
+    line="cfg_file={{nagios_object_dir}}/{{item}}.cfg"
+    regexp="^cfg_file\={{nagios_object_dir}}/{{item}}\.cfg"
+  with_items:
+    - hosts
+    - hostgroups
+    - services
+    - additional_commands
+  when: nagios_cfg_dir_enabled == false
 
-# Host Groups.
-- name: create hostgroups.cfg
-  sudo: true
-  notify: restart nagios
-  template: >
-    src=hostgroups.cfg
-    dest=/usr/local/nagios/etc/objects/hostgroups.cfg
-    owner=nagios
-    group=nagios
-    mode=640
-
-- name: load hostgroups.cfg
+- name: Update nagios.cfg with config dir
   sudo: true
   notify: restart nagios
   lineinfile: >
-    dest=/usr/local/nagios/etc/nagios.cfg
-    line="cfg_file=/usr/local/nagios/etc/objects/hostgroups.cfg"
-    regexp="^cfg_file\=/usr/local/nagios/etc/objects/hostgroups\.cfg"
-    state=present
-
-# Additional Commands
-- name: create additional_commands.cfg
-  sudo: true
-  notify: restart nagios
-  template: >
-    src=commands.cfg
-    dest=/usr/local/nagios/etc/objects/additional_commands.cfg
-    owner=nagios
-    group=nagios
-    mode=640
-
-- name: load additional_commands.cfg
-  sudo: true
-  notify: restart nagios
-  lineinfile: >
-    dest=/usr/local/nagios/etc/nagios.cfg
-    line="cfg_file=/usr/local/nagios/etc/objects/additional_commands.cfg"
-    regexp="^cfg_file\=/usr/local/nagios/etc/objects/additional_commands\.cfg"
-    state=present
-
-# Services.
-- name: create services.cfg
-  sudo: true
-  notify: restart nagios
-  template: >
-    src=services.cfg
-    dest=/usr/local/nagios/etc/objects/services.cfg
-    owner=nagios
-    group=nagios
-    mode=640
-
-- name: load services.cfg
-  sudo: true
-  notify: restart nagios
-  lineinfile: >
-    dest=/usr/local/nagios/etc/nagios.cfg
-    line="cfg_file=/usr/local/nagios/etc/objects/services.cfg"
-    regexp="^cfg_file\=/usr/local/nagios/etc/objects/services\.cfg"
-    state=present
+    dest={{nagios_base_dir}}/etc/nagios.cfg
+    line="cfg_dir={{nagios_object_dir}}"
+    regexp="^cfg_dir={{nagios_object_dir}}"
+  when: nagios_cfg_dir_enabled == true
