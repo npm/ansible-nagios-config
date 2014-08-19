@@ -24,6 +24,15 @@ in the next section of this document.
 * Create a playbook that references the *ansible-nagios-config* role, and use it to deploy
 your configuration.
 
+Configuration
+-------------
+
+* **nagios_base_dir:** the nagios installation directory. *default: /usr/local/nagios*
+* **nagios_object_dir:** the nagios object directory. *default: {{nagios_base_dir}}/etc/objects*
+* **nagios_cfg_dir_enabled:** if true, configures nagios_object_dir as a cfg_dir. *default: false*
+* **nagios_user:** id of nagios user. *default: nagios*
+* **nagios_group:** id of nagios group. *default: nagios*
+
 nagios_hosts
 ------------
 
