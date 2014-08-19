@@ -3,7 +3,7 @@ galaxy_info:
   author: Benjamin Coe
   description: A role for deploying nagios configuration.
   min_ansible_version: 1.4
-  version: 0.0.1
+  version: 1.0.0
   license: ISC
   platforms:
   - name: Ubuntu
