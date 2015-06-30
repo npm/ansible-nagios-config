@@ -60,8 +60,8 @@ nagios_host_groups:
   - name: 'www'
     alias: 'Web Servers'
     checks:
-      - {command: 'check_http_npmjs_org', description: 'Check HTTP'}
-      - {command: 'check_nrpe2!check_disk_nrpe', description: 'Disk Space Left'}
+      - {command: 'check_http_npmjs_org', description: 'Check HTTP', max_check_attempts: 5, check_interval: 10, retry_interval: 5}
+      - {command: 'check_nrpe2!check_disk_nrpe', description: 'Disk Space Left', notification_options: 'c,r'}
   - name: 'aws'
     alias: 'AWS Servers'
   - name: 'redis'
