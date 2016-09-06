@@ -1,33 +1,91 @@
-- name: Install config files
+# Hosts.
+- name: create hosts.cfg
   sudo: true
   notify: restart nagios
   template: >
-    src={{item.src}}
-    dest={{nagios_object_dir}}/{{item.dest}}
-    owner={{nagios_user}}
-    group={{nagios_group}}
+    src=hosts.cfg.j2
+    dest=/usr/local/nagios/etc/objects/hosts.cfg
+    owner=nagios
+    group=nagios
     mode=640
-  with_items:
-    - { src: hosts.cfg, dest: hosts.cfg }
-    - { src: hostgroups.cfg, dest: hostgroups.cfg }
-    - { src: services.cfg, dest: services.cfg }
-    - { src: commands.cfg, dest: additional_commands.cfg }
 
-- name: Update nagios.cfg with config files
+- name: load hosts.cfg
   sudo: true
   notify: restart nagios
   lineinfile: >
-    dest={{nagios_base_dir}}/etc/nagios.cfg
-    line="cfg_file={{nagios_object_dir}}/{{item}}.cfg"
-    regexp="^cfg_file\={{nagios_object_dir}}/{{item}}\.cfg"
-  with_items:
-    - hosts
-    - hostgroups
-    - services
-    - additional_commands
-  when: nagios_cfg_dir_enabled == false
+    dest=/usr/local/nagios/etc/nagios.cfg
+    line="cfg_file=/usr/local/nagios/etc/objects/hosts.cfg"
+    regexp="cfg_file\=/usr/local/nagios/etc/objects/hosts\.cfg"
 
-- name: Update nagios.cfg with config dir
+# Host Groups.
+- name: create hostgroups.cfg
+  sudo: true
+  notify: restart nagios
+  template: >
+    src=hostgroups.cfg.j2
+    dest=/usr/local/nagios/etc/objects/hostgroups.cfg
+    owner=nagios
+    group=nagios
+    mode=640
+
+- name: load hostgroups.cfg
+  sudo: true
+  notify: restart nagios
+  lineinfile: >
+    dest=/usr/local/nagios/etc/nagios.cfg
+    line="cfg_file=/usr/local/nagios/etc/objects/hostgroups.cfg"
+    regexp="cfg_file\=/usr/local/nagios/etc/objects/hostgroups\.cfg"
+
+# Contacts.
+- name: create contacts.cfg
+  sudo: true
+  notify: restart nagios
+  template: >
+    src=contacts.cfg.j2
+    dest=/usr/local/nagios/etc/objects/contacts.cfg
+    owner=nagios
+    group=nagios
+    mode=640
+
+- name: load contacts.cfg
+  sudo: true
+  notify: restart nagios
+  lineinfile: >
+    dest=/usr/local/nagios/etc/nagios.cfg
+    line="cfg_file=/usr/local/nagios/etc/objects/contacts.cfg"
+    regexp="cfg_file\=/usr/local/nagios/etc/objects/contacts\.cfg"
+
+# Additional Commands
+- name: create additional_commands.cfg
+  sudo: true
+  notify: restart nagios
+  template: >
+    src=commands.cfg.j2
+    dest=/usr/local/nagios/etc/objects/additional_commands.cfg
+    owner=nagios
+    group=nagios
+    mode=640
+
+- name: load additional_commands.cfg
+  sudo: true
+  notify: restart nagios
+  lineinfile: >
+    dest=/usr/local/nagios/etc/nagios.cfg
+    line="cfg_file=/usr/local/nagios/etc/objects/additional_commands.cfg"
+    regexp="cfg_file\=/usr/local/nagios/etc/objects/additional_commands\.cfg"
+
+# Services.
+- name: create services.cfg
+  sudo: true
+  notify: restart nagios
+  template: >
+    src=services.cfg.j2
+    dest=/usr/local/nagios/etc/objects/services.cfg
+    owner=nagios
+    group=nagios
+    mode=640
+
+- name: load services.cfg
   sudo: true
   notify: restart nagios
   lineinfile: >
@@ -35,5 +93,24 @@
     line="cfg_dir={{nagios_object_dir}}"
     regexp="^cfg_dir={{nagios_object_dir}}"
   when: nagios_cfg_dir_enabled == true
+
+# PagerDuty
+- name: configure pagerduty
+  tasks:
+  include: pagerduty.yml
+  when: nagios_enable_pagerduty_notifications
+
+# SES
+- name: configure amazon ses
+  tasks:
+  include: ses.yml
+  when: nagios_enable_ses_notifications
+
+# Apache VHOST for Nagios
+- name: configure apache nagios vhost
+  tasks: 
+  include: apache.yml
+  notify: restart nagios
+  notify: restart apache
 
 - include: ssh_keys.yml

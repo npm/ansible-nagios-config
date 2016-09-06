@@ -1,0 +1,13 @@
+- name: copy nagios vhost
+  sudo: true
+  template: >
+    src=nagios.vhost.j2
+    dest=/etc/apache2/sites-available/nagios.conf
+    owner=root
+    group=root
+    mode=640
+  when: not (legacy | default(false))
+
+- name: enable nagios vhost
+  sudo: true
+  command: "a2ensite nagios"
