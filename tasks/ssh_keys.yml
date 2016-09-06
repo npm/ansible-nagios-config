@@ -1,0 +1,24 @@
+
+- name: make sure SSH Control Master directory exists
+  become: true
+  file: name=/usr/local/nagios/.ssh/controlmaster state=directory owner=nagios group=root mode=0700
+
+# from https://juriansluiman.nl/article/151/managing-ssh-known-hosts-with-ansible
+- name: Make sure the known hosts file exists
+  become: true
+  file: path=/usr/local/nagios/.ssh/known_hosts state=touch
+
+- name: Check host name availability
+  shell: "ssh-keygen -f /usr/local/nagios/.ssh/known_hosts  -F {{ item }}"
+  become: true
+  become_user: nagios
+  with_items: nagios_ssh_clients
+  register: ssh_known_host_results
+  ignore_errors: yes
+
+- name: Scan the public key
+  shell: "{{ ssh_known_hosts_command}} {{ item.item }} >> /usr/local/nagios/.ssh/known_hosts"
+  become: true
+  become_user: nagios
+  with_items: ssh_known_host_results.results
+  when: item.stdout == ""

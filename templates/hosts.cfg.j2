@@ -7,6 +7,7 @@ define host{
   retain_status_information       1                     ; Retain status information across program restarts
   retain_nonstatus_information    1                     ; Retain non-status information across program restarts
   notification_period             24x7                  ; Send host notifications at any time
+  register                        0                     ; DONT REGISTER THIS DEFINITION - ITS NOT A REAL HOST, JUST A TEMPLATE!
   notification_options            d,u,r                 ; Only send notifications for specific host states
   contact_groups                  admins                ; Notifications get sent to the admins by default
   register                        0                     ; DONT REGISTER THIS DEFINITION - ITS NOT A REAL HOST, JUST A TEMPLATE!
@@ -23,7 +24,5 @@ define host{
   host_name   {{host.name}}
   alias       {{host.address}}
   address     {{host.address}}
-  {% if host.parents is defined %}parents     {{host.parents|join(',')}}
-{% endif %}
 }
 {% endfor %}

@@ -24,15 +24,6 @@ in the next section of this document.
 * Create a playbook that references the *ansible-nagios-config* role, and use it to deploy
 your configuration.
 
-Configuration
--------------
-
-* **nagios_base_dir:** the nagios installation directory. *default: /usr/local/nagios*
-* **nagios_object_dir:** the nagios object directory. *default: {{nagios_base_dir}}/etc/objects*
-* **nagios_cfg_dir_enabled:** if true, configures nagios_object_dir as a cfg_dir. *default: false*
-* **nagios_user:** id of nagios user. *default: nagios*
-* **nagios_group:** id of nagios group. *default: nagios*
-
 nagios_hosts
 ------------
 
@@ -80,3 +71,24 @@ nagios_commands:
   - {name: 'check_http_npmjs_org', command: '$USER1$/check_http -H npmjs.org -I $HOSTADDRESS$ $ARG1$'}
   - {name: 'check_nrpe2', command: '$USER1$/check_nrpe -H $HOSTADDRESS$ -c $ARG1$'}
 ```
+
+nagios_contacts
+---------------
+
+Describe custom contacts
+
+```yaml
+nagios_contacts:
+  - {name: 'The Contact Name', shortname: 'thecontactshortname', alias: 'The Contact Alias", email: "the@contactemail.com"}
+```
+
+nagios_contactgroups
+--------------------
+
+Describe the contact groups
+
+```yaml
+nagios_contactgroups:
+  - {name: 'contactgroupname', alias: 'The Contact Group Name', members: 'members,of,the,contactgroup"}
+```
+
