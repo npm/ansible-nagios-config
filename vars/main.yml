@@ -15,3 +15,6 @@ nagios_user: nagios
 
 # id of nagios group
 nagios_group: nagios
+
+nagios_ssl_cert_pem: /etc/apache2/ssl/nagios.pem
+nagios_ssl_cert_key: /etc/apache2/ssl/nagios.key
