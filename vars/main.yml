@@ -1,0 +1,1 @@
+ssh_known_hosts_command: "ssh-keyscan -H -T 10"
