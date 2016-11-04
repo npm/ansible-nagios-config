@@ -1,0 +1,7 @@
+{% for host_group in nagios_host_groups %}
+define hostgroup {
+  hostgroup_name  {{host_group.name}};
+  alias  {{host_group.alias}};
+  members  {{nagios_hosts|selectattr(host_group.name, 'defined')|map(attribute='name')|join(',')}};
+}
+{% endfor %}

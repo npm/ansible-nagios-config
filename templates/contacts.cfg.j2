@@ -1,0 +1,16 @@
+{% for contact in nagios_contacts %}
+define contact{
+  contact_name  {{contact.shortname}}
+  use generic-contact
+  alias {{contact.name}}
+  email {{contact.email}}  
+}
+{% endfor %}
+
+{% for contactgroup in nagios_contactgroups %}
+define contactgroup{
+  contactgroup_name {{contactgroup.name}}
+  alias {{contactgroup.alias}}
+  members {{contactgroup.members}}
+}
+{% endfor %}
