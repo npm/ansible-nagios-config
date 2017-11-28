@@ -1,5 +1,5 @@
 - name: Install config files
-  sudo: true
+  become: true
   notify: restart nagios
   template: >
     src={{item.src}}
@@ -14,7 +14,7 @@
     - { src: commands.cfg, dest: additional_commands.cfg }
 
 - name: Update nagios.cfg with config files
-  sudo: true
+  become: true
   notify: restart nagios
   lineinfile: >
     dest={{nagios_base_dir}}/etc/nagios.cfg
@@ -28,7 +28,7 @@
   when: nagios_cfg_dir_enabled == false
 
 - name: Update nagios.cfg with config dir
-  sudo: true
+  become: true
   notify: restart nagios
   lineinfile: >
     dest={{nagios_base_dir}}/etc/nagios.cfg
